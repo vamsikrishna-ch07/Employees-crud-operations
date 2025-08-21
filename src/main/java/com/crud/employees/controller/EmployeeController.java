@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -94,12 +95,21 @@ public class EmployeeController {
     }
 
 
+@PatchMapping("/{id}")
+public Employee updateEmployeePartial(@PathVariable Long id, @RequestBody Map<String, Object> updates){
+        return employeeService.updateEmployee(id, updates);
 
-
-
+}
     @DeleteMapping
     public ResponseEntity<String> deleteEmployee(Long id) {
         employeeService.deleteEmployee(id);
         return ResponseEntity.ok("Employee deleted successfully");
     }
 }
+
+/*note:
+put and patch actual usage is
+for patching means few records only need to update do by using this
+and the other end put will help entire object need to update cases only
+we can do whatever do by patch but don't follow that approach
+ */

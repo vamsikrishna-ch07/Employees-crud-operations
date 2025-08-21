@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -65,6 +66,30 @@ public class EmployeeService {
     }
 
 
+
+    public Employee updateEmployee(Long id, Map<String, Object> updates) {
+        return employeeRepository.findById(id)
+                .map(existingEmployee -> {
+                    if (updates.containsKey("name")) {
+                        existingEmployee.setName((String) updates.get("name"));
+                    }
+                    if (updates.containsKey("email")) {
+                        existingEmployee.setEmail((String) updates.get("email"));
+                    }
+                    if (updates.containsKey("department")) {
+                        existingEmployee.setDepartment((String) updates.get("department"));
+                    }
+                    if (updates.containsKey("position")) {
+                        existingEmployee.setPosition((String) updates.get("position"));
+                    }
+                    if (updates.containsKey("salary")) {
+                        existingEmployee.setSalary((Double) updates.get("salary"));
+                        // cast carefully, if you are sending Integer you may need Number conversion
+                    }
+                    return employeeRepository.save(existingEmployee);
+                })
+                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + id));
+    }
 
     public void deleteEmployee(Long id) {
 
