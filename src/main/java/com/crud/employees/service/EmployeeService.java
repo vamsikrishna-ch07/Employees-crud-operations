@@ -9,18 +9,25 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class EmployeeService {
-    private  EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     public List<Employee> getEmployees() {
         return employeeRepository.findAll();
     }
 
     public Optional<Employee> getEmployeeById(Long id) {
+
         return employeeRepository.findById(id);
     }
-
+     public List<Employee> findByDepartment(String name) {
+        return employeeRepository.findByDepartment(name);
+    }
     public Employee createEmployee(Employee employee) {
         return employeeRepository.save(employee);
     }
