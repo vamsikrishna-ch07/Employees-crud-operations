@@ -31,23 +31,71 @@ public class EmployeeController {
     return employeeService.getEmployeeById(id);
     }
     @GetMapping ("/search")
-    public List<Employee> searchEmployees(@RequestParam String name) {
-        return employeeService.findByDepartment(name);
+    public List<Employee> searchEmployees(@RequestParam String employee) {
+        return employeeService.findByDepartment(employee);
     }
 //                .stream()
 //                .filter(employee -> employee.getName().toLowerCase().contains(name.toLowerCase()))
 //                .toList();
 
-    @PostMapping
+
+
+
+
+
+    @PostMapping("/createEmployee")
     public Employee createEmployee(@RequestBody Employee employee) {
         return employeeService.createEmployee(employee);
     }
+    @PostMapping("/create")
+    public Employee createEmployee(
+            @RequestParam String name,
+            @RequestParam String email,
+            @RequestParam String department,
+            @RequestParam String position,
+            @RequestParam Double salary) {
 
-    @PutMapping
-    public Employee updateEmployee(Long id, Employee employee) {
+        Employee employee = new Employee();
+        employee.setName(name);
+        employee.setEmail(email);
+        employee.setDepartment(department);
+        employee.setPosition(position);
+        employee.setSalary(salary);
+
+        return employeeService.createEmployee(employee);
+    }
+//    @PostMapping("/create")
+//    public Employee createEmployee(
+//            @RequestParam String name,
+//            @RequestParam String email,
+//            @RequestParam String department,
+//            @RequestParam String position,
+//            @RequestParam Double salary) {
+//        return employeeService.createEmployee(name, email, department, position, salary);
+//    }
+
+
+
+
+
+    @PutMapping("/{id}")
+    public Employee updateEmployee(@PathVariable Long id,@RequestBody Employee employee) {
 
         return employeeService.updateEmployee(id, employee);
     }
+    @PutMapping("/update")
+    public Employee updateEmployeeByParams(@RequestParam Long id,
+                                           @RequestParam String name,
+                                           @RequestParam String email,
+                                           @RequestParam String department,
+                                           @RequestParam String position,
+                                           @RequestParam Double salary) {
+        return employeeService.updateEmployeeByParams(id, name, email, department, position, salary);
+    }
+
+
+
+
 
     @DeleteMapping
     public ResponseEntity<String> deleteEmployee(Long id) {
